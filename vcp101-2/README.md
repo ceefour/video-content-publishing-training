@@ -6,6 +6,18 @@ The recommended way to install PHP-FFMpeg is through Composer.
 
     composer require -v php-ffmpeg/php-ffmpeg
 
+## MySQL Database
+
+    create table video
+    (
+        id varchar(255) not null
+            primary key,
+        progress int default '0' not null,
+        progresstext text null,
+        progresssub int default '0' not null,
+        playcount int default '0' not null
+    );
+
 ## Encoder daemon
 
 * encoderd.php
