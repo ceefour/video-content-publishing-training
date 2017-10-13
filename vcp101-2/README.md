@@ -6,6 +6,21 @@ The recommended way to install PHP-FFMpeg is through Composer.
 
     composer require -v php-ffmpeg/php-ffmpeg
 
+## Encoder daemon
+
+* encoderd.php
+
+## Web app pages
+
+* index.php
+* uploadform.php
+* show.php
+
+## JSON API
+
+* progress_json.php
+* played_json.php
+
 ## Example
 
 Examples:
