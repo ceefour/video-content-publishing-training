@@ -34,8 +34,6 @@ function encode($file, $processedFolder, $mysql) {
     $video
         ->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(10))
         ->save($thumbnailFile);
-    // add artwork (usable for MP3)
-    $video->filters()->addMetadata(["artwork" => $thumbnailFile]);
         
     // https://github.com/PHP-FFMpeg/PHP-FFMpeg/issues/367
     print("Creating HLS from $file ...\n");
@@ -51,7 +49,7 @@ function encode($file, $processedFolder, $mysql) {
         ->filters()
         ->resize(new FFMpeg\Coordinate\Dimension(360, 240))
         ->synchronize();
-    $hls240 = new FFMpeg\Format\Video\X264('aac', 'libx264');
+    $hls240 = new FFMpeg\Format\Video\X264('aac', 'libx264'); // NVIDIA: h264_nvenc
     $hls240->on('progress', function ($video, $format, $percentage) use ($mysql, $videoId) {
         print("Transcoding HLS 240p: $percentage %\n");
         $handle = $mysql->prepare('UPDATE video SET progresssub=?, progress=? WHERE id=?');
@@ -122,6 +120,8 @@ EOD;
     $mp3File = $targetFolder . '/audio.mp3';
     print("Creating audio only for $file ...\n");
     $video = $ffmpeg->open($file);
+    // add artwork (usable for MP3)
+    $video->filters()->addMetadata(["artwork" => $thumbnailFile]);
     $format = new FFMpeg\Format\Audio\Mp3();
     $format->on('progress', function ($video, $format, $percentage) use ($mysql, $videoId) {
         print("Transcoding MP3: $percentage %\n");

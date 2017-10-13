@@ -63,14 +63,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     flowplayer(function(api, root) {
         api.on('resume', function(e, api) {
             console.info('Resumed. Already resumed?', alreadyResumed);
-            $.ajax({
-                url: 'played_json.php',
-                data: {'id': videoId},
-                dataType: 'json',
-                type: 'post'
-            }).done(function(data) {
-                console.info('Played', data);
-            });
+			if (!alreadyResumed) {
+				$.ajax({
+					url: 'played_json.php',
+					data: {'id': videoId},
+					dataType: 'json',
+					type: 'post'
+				}).done(function(data) {
+					console.info('Played', data);
+				});
+				alreadyResumed = true;
+			}
         });
     });
 
@@ -104,7 +107,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>  
 			<div class="header-top-right">
 				<div class="file">
-					<a href="upload.html">Upload</a>
+					<a href="uploadform.php">Upload</a>
 				</div>	
 				<div class="signin">
 					<a href="#small-dialog2" class="play-icon popup-with-zoom-anim">Sign Up</a>
